@@ -13,6 +13,7 @@ const userRouter = require('./Routes/userRoutes');
 const reviewRouter = require('./Routes/reviewRoutes');
 const appError = require('./utils/AppError');
 const errorController = require('./Controllers/ErrorController');
+const viewRouter = require('./Routes/viewRoutes');
 
 //GLOBAL MIDDLE-WARE
 
@@ -69,19 +70,10 @@ const middleWare = (req, res, next) => {
 };
 App.use(middleWare)
 //Pug MiddleWare
-App.get('/', (req, res) => {
-res.status(200).render('basic')
-})
-
-App.get('/overview', (req, res) => {
-res.status(200).render('overview',{tour:'All Tours'})
-})
-
-App.get('/tour', (req, res) => {
-res.status(200).render('tour',{tour:'The Forest Hiker'})
-})
 
 
+
+App.use('/', viewRouter);
 App.use('/api/v1/tours', tourRouter);
 App.use('/api/v1/users', userRouter);
 App.use('/api/v1/reviews', reviewRouter);

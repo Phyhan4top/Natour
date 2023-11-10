@@ -111,7 +111,7 @@ const Schema = {
     },
   ],
 
-  guide: [{ type: mongoose.ObjectId, ref: 'User' }],
+  guides: [{ type: mongoose.ObjectId, ref: 'User' }],
 };
 const tourSchema = mongoose.Schema(Schema, {
   toJSON: { virtuals: true },
@@ -130,13 +130,13 @@ next()
 })
 //METHOD OF EMBBEDING DOC
 tourSchema.pre('save',async function (next) {
-  const guideTour = this.guide.map(async id => await userModel.findById(id))
-  this.guide=await Promise.all(guideTour)
+  const guideTour = this.guides.map(async id => await userModel.findById(id))
+  this.guides=await Promise.all(guideTour)
   
 next()
 })
 tourSchema.pre(/^find/,async function (next) {
-  this.populate({ path: 'guide', select: '-__v -passwordChangeAt ' });
+  this.populate({ path: 'guides', select: '-__v -passwordChangeAt ' });
 next()
 })
 tourSchema.post('save', function (doc, next) {

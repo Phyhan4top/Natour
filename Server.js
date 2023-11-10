@@ -15,7 +15,7 @@ const App = require('./app');
 const url = process.env.DATABASE.replace('<PASSWORD>', process.env.PASSWORD);
 const urlLocal = process.env.DATABASE_LOCAL;
 mongoose
-  .connect(urlLocal, {
+  .connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // useCreateIndex: true,
@@ -46,4 +46,3 @@ process.on('unhandledRejection', (err) => {
     process.exit(1);
   });
 });
-
