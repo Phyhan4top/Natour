@@ -1,28 +1,66 @@
-const nodeMailer = require('nodemailer')
+const nodeMailer = require('nodemailer');
+const pug = require('pug');
+const htmlToText = require('html-to-text');
 
-const sendEmail =async (options) => {
-  ///CREATE TRANSPORTER
-const transporter = nodeMailer.createTransport({
-  host: process.env.MAIL_HOST,
-  port: process.env.MAIL_PORT,
-  auth: {
-    user: process.env.MAIL_USERNAME,
-    pass: process.env.MAIL_PASSWORD,
-  },timeout:60000
-},);
- 
-  ///CREATE MAIL OPTIONS
-  const mailOptions = {
-    from: 'Phyhan Tech<noreply@gmail.com>',
-    to: options.email,
-    subject: options.subject,
-    text: options.message,
-    // html:options.html
+module.exports = class Email {
+  constructor(user, url) {
+    this.to = user.email;
+    this.firstName = user.name.split(' ')[0];
+    this.url = url;
+    this.from = `Phyhan Tech<${process.env.Email}>`;
   }
 
-  //SEND THE MAIL
+  newTransport() {
+    // IN PRODUCTION CREATE TRANSPORTER
+    if (process.env.NODE_ENV === 'production') {
+      //Production transporter
+      return null;
+    }
 
- await transporter.sendMail(mailOptions)
-}
+    //IN DEVELOPMENT CREATE TRANSPORTER
+    return nodeMailer.createTransport({
+      host: process.env.MAIL_HOST,
+      port: process.env.MAIL_PORT,
+      secure: false,
+      auth: {
+        user: process.env.MAIL_USERNAME,
+        pass: process.env.MAIL_PASSWORD,
+      },
+    });
+  }
 
-module.exports=sendEmail
+  async send(template, subject) {
+    //RENDER PUG
+    const html = pug.renderFile(
+      `${__dirname}/../views/emails/${template}.pug`,
+      { firstName: this.firstName, url: this.url, subject },
+    );
+
+    ///CREATE MAIL OPTIONS
+    const mailOptions = {
+      from: this.from,
+      to: this.to,
+      subject: subject,
+      text: htmlToText.convert(html),
+      html: html,
+    };
+
+    //SEND THE MAIL
+
+    const info = await this.newTransport().sendMail(mailOptions);
+    console.log('message sent ', info.messageId);
+
+    return info;
+  }
+
+  async sendWelcome() {
+    await this.send('welcome', 'Welcome to the Natours family');
+  }
+
+  async sendResetPassword() {
+    await this.send(
+      'passwordReset',
+      'Your password reset token (valid for 10mins)',
+    );
+  }
+};

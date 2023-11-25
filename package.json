@@ -6,12 +6,18 @@
   "scripts": {
     "start": " nodemon Server.js",
     "start:prod": "set NODE_ENV=production&& nodemon Server.js",
-    "debug": "ndb Server.js"
+    "debug": "ndb Server.js",
+    "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js",
+    "build:js": "parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
   },
   "author": "Phyhan",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "axios": "^1.6.1",
     "bcrypt": "^5.1.1",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.0.0",
@@ -25,18 +31,23 @@
     "express-rate-limit": "^7.1.4",
     "helmet": "^7.1.0",
     "hpp": "^0.2.3",
+    "html-to-text": "^9.0.5",
     "jsonwebtoken": "^9.0.2",
     "mapbox-gl": "^2.15.0",
-    "mongoose": "^7.6.4",
+    "mongoose": "^8.0.0",
     "morgan": "^1.10.0",
-    "nodemailer": "^6.9.7",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.1.1",
     "pug": "^3.0.2",
+    "sharp": "^0.32.6",
     "slugify": "^1.6.6",
+    "stripe": "^14.5.0",
     "validator": "^13.11.0"
   },
   "devDependencies": {
     "eslint": "^8.53.0",
     "nodemon": "^3.0.1",
+    "parcel-bundler": "^1.12.5",
     "prettier": "^3.0.3",
     "xss-clean": "^0.1.4"
   }

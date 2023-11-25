@@ -1,4 +1,6 @@
-const { default: rateLimit } = require('express-rate-limit');
+const multer = require('multer');
+
+const sharp = require('sharp');
 const Tour = require('../Model/tourModel');
 const ApiFeatures = require('../utils/ApiFeatures');
 const AppError = require('../utils/AppError');
@@ -10,20 +12,44 @@ const {
   getOneReq,
   getAllReq,
 } = require('./handlerFactory');
-// exports.checkBody = (req, res, next) => {
-//   console.log('BODY: ', req.body);
-//   console.log('name: ', req.body.name);
-//   console.log('price: ', req.body.price);
-//   const { name, price } = req.body;
-//   if (!name || !price) {
-//     return res.status(400).json({
-//       status: 'Error',
-//       body: { message: 'Missing Name and Price Properties' },
-//     });
-//   }
 
-//   next();
-// };
+const multerStorage = multer.memoryStorage();
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) return cb(null, true);
+  return cb(
+    new AppError('File upload is not an image, please upload images only', 400),
+    false,
+  );
+};
+const upload = multer({ Storage: multerStorage, fileFilter: multerFilter });
+exports.uploadTourImages = upload.fields([
+  { name: 'imageCover', maxCount: 1 },
+  { name: 'images', maxCount: 3 },
+]);
+
+exports.resizeTourImages = async (req, res, next) => {
+  req.body.imageCover = `tour-${req.params.id}-cover-jpeg`;
+  await sharp(req.files.imageCover[0].buffer)
+    .resize(2000, 1333)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/tours/${req.body.imageCover}`);
+  req.body.images = [];
+
+  await Promise.all(
+    req.files.images.map(async (file, i) => {
+      const filename = `tour-${req.params.id}-${i + 1}.jpeg`;
+      await sharp(file.buffer)
+        .resize(2000, 1333)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toFile(`public/img/tours/${filename}`);
+      req.body.images.push(filename);
+    }),
+  );
+
+  next();
+};
 exports.aliasTop5Cheap = (req, res, next) => {
   req.query.limit = '5';
   req.query.page = '1';
@@ -65,7 +91,7 @@ exports.getTourWithin = async (req, res, next) => {
 exports.getLocation = async (req, res, next) => {
   const { latLng, unit } = req.params;
   const [lat, lng] = latLng.split(',');
-  const unitMult = unit === 'ml' ?1/1609.34: 1/1000;
+  const unitMult = unit === 'ml' ? 1 / 1609.34 : 1 / 1000;
   if (!lat || !lng) {
     return next(
       new AppError(
@@ -79,7 +105,7 @@ exports.getLocation = async (req, res, next) => {
       $geoNear: {
         near: { type: 'Point', coordinates: [Number(lng), Number(lat)] },
         distanceField: 'distance',
-        distanceMultiplier:unitMult
+        distanceMultiplier: unitMult,
       },
     },
     {

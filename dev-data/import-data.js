@@ -14,7 +14,8 @@ mongoose
   .connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    // useCreateIndex: true,
+    maxPoolSize:10
+    // // useCreateIndex: true,
     // useFindAndModify: false
   })
   .then((con) => {
@@ -35,8 +36,8 @@ const importTours = async () => {
   try {
     console.log('All tours imported');
     await userModel.create(users,{validateBeforeSave:false});
-    await tourModel.create(tours);
-    await reviewModel.create(reviews);
+    await tourModel.create(tours, { validateBeforeSave: false });
+    await reviewModel.create(reviews, { validateBeforeSave: false });
     mongoose.connection.close();
   } catch (err) {
     console.log(err);
@@ -45,9 +46,9 @@ const importTours = async () => {
 const deleteAllTour = async () => {
   try {
     console.log('All tours deleted');
-    await tourModel.deleteMany({});
-    await reviewModel.deleteMany({});
-    await userModel.deleteMany({});
+    await tourModel.deleteMany({},{maxTimeMS:2000});
+    await reviewModel.deleteMany({}, { maxTimeMS: 2000 });
+    await userModel.deleteMany({}, { maxTimeMS: 2000 });
     mongoose.connection.close();
   } catch (err) {
     console.log(err);

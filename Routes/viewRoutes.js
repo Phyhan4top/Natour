@@ -1,10 +1,23 @@
 const express = require('express');
-const Router =express.Router()
-const { Overview, tourView } = require('../Controllers/viewsRoutesHandle');
 
+const Router = express.Router();
+const {
+  Overview,
+  tourView,
+  loginView,
+  userView,
+  myBookings,
+  signUpView,
+} = require('../Controllers/viewsRoutesHandle');
+const { isLoggedIn, protect } = require('../Model/Auth/AuthController');
+const { checkoutBooking } = require('../Controllers/BookingController');
 
-Router.route('/').get(Overview);
+// Router.use(isLoggedIn);
+Router.route('/').get(checkoutBooking, isLoggedIn, Overview);
+Router.route('/tour/:name').get(isLoggedIn, tourView);
+Router.route('/login').get(isLoggedIn, loginView);
+Router.route('/signup').get(signUpView);
+Router.route('/user').get(protect, userView);
+Router.route('/my-bookings').get(protect, myBookings);
 
-Router.route('/tour/:name').get(tourView);
-
-module.exports=Router
+module.exports = Router;

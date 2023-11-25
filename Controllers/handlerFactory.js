@@ -1,57 +1,49 @@
+const AppError = require('../utils/AppError');
+const catchAsync = require('../utils/catchAsync');
+const ApiFeatures = require('../utils/ApiFeatures');
 
-const AppError = require("../utils/AppError");
-const catchAsync = require("../utils/catchAsync");
-const ApiFeatures = require("../utils/ApiFeatures");
-
-
-exports. createReq = (Model) => {
-
-return catchAsync(async (req, res, next) => {
-  const doc = await Model.create(req.body);
-  res.status(201).send({ status: 'success', body: { data: doc } });
-});
-}
-exports. deleteReq = (Model) => {
-
-return catchAsync(async (req, res, next) => {
-  const id = req.params.id;
-
-  const model = await Model.findByIdAndDelete(id);
-  if (!model) {
-    return next(new AppError('No Document found with this ID', 404));
-  }
-  res.status(204).send({ status: 'success', data: { message: 'DELETED' } });
-});
-}
-
-exports.updateReq = (Model) => {
-
-return catchAsync(async (req, res, next) => {
-  const id = req.params.id;
-  const body = req.body;
-  const model = await Model.findByIdAndUpdate(id, body, {
-    new: true,
-    runValidators: true,
+exports.createReq = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const doc = await Model.create(req.body);
+    res.status(201).send({ status: 'success', body: { data: doc } });
   });
-  if (!model) {
-    return next(new AppError('No Document found with this ID', 404));
-  }
-  res.status(200).json({
-    status: 'success',
-   body: {
-    data:model
-    },
-  });
-});
-}
+exports.deleteReq = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const { id } = req.params;
 
-exports.getOneReq=(Model,populateOptions)=>{
-  return catchAsync(async (req, res, next) => {
-    let query = Model.findById(req.params.id)
-    if (populateOptions) {
-    query.populate(populateOptions);
+    const model = await Model.findByIdAndDelete(id);
+    if (!model) {
+      return next(new AppError('No Document found with this ID', 404));
     }
-    const model = await query
+    res.status(204).send({ status: 'success', data: { message: 'DELETED' } });
+  });
+
+exports.updateReq = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const { body } = req;
+    const model = await Model.findByIdAndUpdate(id, body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!model) {
+      return next(new AppError('No Document found with this ID', 404));
+    }
+    res.status(200).json({
+      status: 'success',
+      body: {
+        data: model,
+      },
+    });
+  });
+
+exports.getOneReq = (Model, populateOptions) =>
+  catchAsync(async (req, res, next) => {
+    const query = Model.findById(req.params.id);
+    if (populateOptions) {
+      query.populate(populateOptions);
+    }
+    const model = await query;
     if (!model) {
       return next(new AppError('No Document found with this ID', 404));
     }
@@ -63,12 +55,9 @@ exports.getOneReq=(Model,populateOptions)=>{
       },
     });
   });
-  
-}
 
-exports.getAllReq = (Model) => {
-
-  return catchAsync(async (req, res, next) => {
+exports.getAllReq = (Model) =>
+  catchAsync(async (req, res, next) => {
     let filter = {};
     if (req.params.tourId) {
       filter = { tour: req.params.tourId };
@@ -87,5 +76,3 @@ exports.getAllReq = (Model) => {
       body: { data: models },
     });
   });
-
-}
