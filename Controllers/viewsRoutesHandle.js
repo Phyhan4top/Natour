@@ -13,7 +13,11 @@ exports.Overview = catchAsync(async (req, res) => {
 
 exports.tourView = catchAsync(async (req, res, next) => {
   const ident = req.params.name;
-  const { id } = req.user;
+  let id;
+  if (req.user) {
+    id = req.user.id;
+  }
+
   const tour = await Tour.find({ name: ident }).populate({
     path: 'reviews',
     fields: 'review user rating',

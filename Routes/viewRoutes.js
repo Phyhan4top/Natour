@@ -18,6 +18,6 @@ Router.route('/tour/:name').get(isLoggedIn, tourView);
 Router.route('/login').get(isLoggedIn, loginView);
 Router.route('/signup').get(signUpView);
 Router.route('/user').get(protect, userView);
-Router.route('/my-bookings').get(protect, myBookings);
+Router.route('/my-bookings').get(isLoggedIn, myBookings);
 
 module.exports = Router;
