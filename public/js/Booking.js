@@ -7,10 +7,14 @@ const stripe = Stripe(
 );
 
 export const BookTourCheckout = async (tourId) => {
+  let url;
+  if (process.env.NODE_ENV === "development") {
+  url = `http://localhost:3000/api/v1/bookings/checkout-session/${tourId}`;
+  } else {
+  url = `https://natour-app-ae8a.onrender.com/api/v1/bookings/checkout-session/${tourId}`;
+  }
   try {
-    const session = await axios.get(
-      `http://localhost:3000/api/v1/bookings/checkout-session/${tourId}`,
-    );
+    const session = await axios.get(url);
     console.log(session);
     console.log(session.data.session.id);
     await stripe.redirectToCheckout({

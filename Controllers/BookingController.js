@@ -15,7 +15,9 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   const product = await stripe.products.create({
     name: `${tour.name} tour`,
     description: tour.summary,
-    images: [`https://www.natours.dev/img/tours/${tour.imageCover}`],
+    images: [
+      `https://natour-app-ae8a.onrender.com/img/tours/${tour.imageCover}`,
+    ],
   });
 
   const price = await stripe.prices.create({
