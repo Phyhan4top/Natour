@@ -11961,7 +11961,6 @@ var showAlert = exports.showAlert = function showAlert(type, msg) {
   setTimeout(hideAlert, time * 1000);
 };
 },{}],"login.js":[function(require,module,exports) {
-var define;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11981,19 +11980,16 @@ var log = exports.log = /*#__PURE__*/function () {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          if ("development" === 'development') {
-            url = type === 'login' ? "http://localhost:3000/api/v1/users/login" : "http://localhost:3000/api/v1/users/signup";
-          } else {
-            url = type === 'login' ? "https://natour-app-ae8a.onrender.com/api/v1/users/login" : "https://natour-app-ae8a.onrender.com/api/v1/users/signup";
-          }
-          _context.prev = 1;
-          _context.next = 4;
+          url = type === 'login' ? "/api/v1/users/login" : "/api/v1/users/signup";
+          console.log(url);
+          _context.prev = 2;
+          _context.next = 5;
           return (0, _axios.default)({
             method: 'POST',
             url: url,
             data: data
           });
-        case 4:
+        case 5:
           res = _context.sent;
           if (res.data.status === 'success') {
             (0, _Alert.showAlert)('success', "".concat(type, " in Successfully"));
@@ -12002,18 +11998,18 @@ var log = exports.log = /*#__PURE__*/function () {
             }, 1500);
           }
           console.log(res);
-          _context.next = 13;
+          _context.next = 14;
           break;
-        case 9:
-          _context.prev = 9;
-          _context.t0 = _context["catch"](1);
+        case 10:
+          _context.prev = 10;
+          _context.t0 = _context["catch"](2);
           (0, _Alert.showAlert)('error', _context.t0.response.data.message);
           console.log(_context.t0.response.data.message);
-        case 13:
+        case 14:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[1, 9]]);
+    }, _callee, null, [[2, 10]]);
   }));
   return function log(_x, _x2) {
     return _ref.apply(this, arguments);
@@ -12021,36 +12017,31 @@ var log = exports.log = /*#__PURE__*/function () {
 }();
 var logOut = exports.logOut = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-    var url, res;
+    var res;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           _context2.prev = 0;
-          if ("development" === 'development') {
-            url = "http://localhost:3000/api/v1/users/logout";
-          } else {
-            url = "https://natour-app-ae8a.onrender.com/api/v1/users/logout";
-          }
-          _context2.next = 4;
+          _context2.next = 3;
           return (0, _axios.default)({
             method: 'GET',
-            url: url
+            url: "/api/v1/users/logout"
           });
-        case 4:
+        case 3:
           res = _context2.sent;
           console.log(res);
           if (res.data.status === 'success') location.assign('/');
-          _context2.next = 12;
+          _context2.next = 11;
           break;
-        case 9:
-          _context2.prev = 9;
+        case 8:
+          _context2.prev = 8;
           _context2.t0 = _context2["catch"](0);
           (0, _Alert.showAlert)('error', 'something went wrong');
-        case 12:
+        case 11:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[0, 9]]);
+    }, _callee2, null, [[0, 8]]);
   }));
   return function logOut() {
     return _ref2.apply(this, arguments);
@@ -12134,11 +12125,7 @@ var updateSettings = exports.updateSettings = /*#__PURE__*/function () {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
           _context5.prev = 0;
-          if ("development" === 'development') {
-            url = type === 'password' ? "http://localhost:3000/api/v1/users/updatepassword" : "http://localhost:3000/api/v1/users/updateMe";
-          } else {
-            url = type === 'data' ? "https://natour-app-ae8a.onrender.com/api/v1/users/updatepassword" : "https://natour-app-ae8a.onrender.com/api/v1/users/updateMe";
-          }
+          url = type === 'data' ? "/api/v1/users/updatepassword" : "/api/v1/users/updateMe";
           _context5.next = 4;
           return _axios.default.patch(url, data);
         case 4:
@@ -12211,7 +12198,6 @@ var displayMap = exports.displayMap = function displayMap(locations) {
   });
 };
 },{}],"Booking.js":[function(require,module,exports) {
-var define;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12234,11 +12220,7 @@ var BookTourCheckout = exports.BookTourCheckout = /*#__PURE__*/function () {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          if ("development" === 'development') {
-            url = "http://localhost:3000/api/v1/bookings/checkout-session/".concat(tourId);
-          } else {
-            url = "https://natour-app-ae8a.onrender.com/api/v1/bookings/checkout-session/".concat(tourId);
-          }
+          url = "/api/v1/bookings/checkout-session/".concat(tourId);
           _context.prev = 1;
           _context.next = 4;
           return _axios.default.get(url);
