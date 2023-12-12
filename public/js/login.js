@@ -4,22 +4,18 @@ import { showAlert } from './Alert';
 
 export const log = async (data, type) => {
   let url;
-  if (process.env.NODE_ENV === "development") {
-   url =
+  if (process.env.NODE_ENV === 'development') {
+    url =
       type === 'login'
         ? `http://localhost:3000/api/v1/users/login`
         : `http://localhost:3000/api/v1/users/signup`;
-  
   } else {
-  url =
-    type === 'login'
-      ? `https://natour-app-ae8a.onrender.com/api/v1/users/login`
-      : `https://natour-app-ae8a.onrender.com/api/v1/users/signup`;
-  
+    url =
+      type === 'login'
+        ? `https://natour-app-ae8a.onrender.com/api/v1/users/login`
+        : `https://natour-app-ae8a.onrender.com/api/v1/users/signup`;
   }
 
-
- 
   try {
     const res = await axios({
       method: 'POST',
@@ -42,12 +38,12 @@ export const log = async (data, type) => {
 
 export const logOut = async () => {
   try {
-      let url;
-      if (process.env.NODE_ENV === 'development') {
-        url = `http://localhost:3000/api/v1/users/logout`;
-      } else {
-        url =`https://natour-app-ae8a.onrender.com/api/v1/users/logout`;
-      }
+    let url;
+    if (process.env.NODE_ENV === 'development') {
+      url = `http://localhost:3000/api/v1/users/logout`;
+    } else {
+      url = `https://natour-app-ae8a.onrender.com/api/v1/users/logout`;
+    }
 
     const res = await axios({
       method: 'GET',
@@ -103,21 +99,18 @@ export const changeInfo = async (name, email) => {
 
 export const updateSettings = async (data, type) => {
   try {
-
-      let url;
-      if (process.env.NODE_ENV === 'development') {
-       url =
-         type === 'password'
-           ? `http://localhost:3000/api/v1/users/updatepassword`
-           : `http://localhost:3000/api/v1/users/updateMe`;
-      } else {
-        url =
-          type === 'data'
-            ? `https://natour-app-ae8a.onrender.com/api/v1/users/updatepassword`
-            : `https://natour-app-ae8a.onrender.com/api/v1/users/updateMe`;
-      }
-
-  
+    let url;
+    if (process.env.NODE_ENV === 'development') {
+      url =
+        type === 'password'
+          ? `http://localhost:3000/api/v1/users/updatepassword`
+          : `http://localhost:3000/api/v1/users/updateMe`;
+    } else {
+      url =
+        type === 'data'
+          ? `https://natour-app-ae8a.onrender.com/api/v1/users/updatepassword`
+          : `https://natour-app-ae8a.onrender.com/api/v1/users/updateMe`;
+    }
 
     const res = await axios.patch(url, data);
     if (res.data.status === 'success') {
