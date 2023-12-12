@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 // eslint-disable-next-line node/no-unpublished-require
-const xss = require('xss');
+const {xss} = require('express-xss-sanitizer');
 const hpp = require('hpp');
 
 const App = express();
@@ -17,8 +17,8 @@ const userRouter = require('./Routes/userRoutes');
 const reviewRouter = require('./Routes/reviewRoutes');
 const BookingRouter = require('./Routes/bookingRoutes');
 const AppError = require('./utils/AppError');
-const errorController = require('./Controllers/ErrorController');
 const viewRouter = require('./Routes/viewRoutes');
+const errorController = require('./Controllers/ErrorController');
 
 //GLOBAL MIDDLE-WARE
 
@@ -35,7 +35,7 @@ App.use(
   }),
 );
 
-//DEVELOPMENT LOGGING 
+//DEVELOPMENT LOGGING
 
 if (process.env.NODE_ENV === 'development') {
   App.use(morgan('dev'));

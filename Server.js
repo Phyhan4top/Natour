@@ -40,9 +40,13 @@ const server = App.listen(port, () => {
 
 ///Handling global UNHANDLE REJECTION
 process.on('unhandledRejection', (err) => {
-  console.log(err.name, err.message);
-  console.log('UNHANDLE REJECTION, Shutting down');
+  console.error(err.name, err.message);
+  console.log('UNHANDLED REJECTION, Shutting down');
+
+  // Gracefully shut down, close MongoDB connection, then exit
   server.close(() => {
-    process.exit(1);
+    mongoose.connection.close(() => {
+      process.exit(1);
+    });
   });
 });
