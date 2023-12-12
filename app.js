@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 // eslint-disable-next-line node/no-unpublished-require
-const xss = require('xss-clean');
+const xss = require('xss');
 const hpp = require('hpp');
 
 const App = express();
@@ -35,7 +35,7 @@ App.use(
   }),
 );
 
-//DEVELOPMENT LOGGING
+//DEVELOPMENT LOGGING 
 
 if (process.env.NODE_ENV === 'development') {
   App.use(morgan('dev'));
