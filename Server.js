@@ -3,17 +3,14 @@ const env = require('dotenv');
 
 env.config({ path: './config.env' });
 
-process.on('uncaughtException', (err) => {
-  console.log(err.name, err.message);
-  console.log('UNCATCH EXCEPTIONAL, Shutting down');
-
+process.on('uncaughtException', () => {
   process.exit(1);
 });
 const App = require('./app');
 // mongoose.set({strictQuery: true});
 
 const url = process.env.DATABASE.replace('<PASSWORD>', process.env.PASSWORD);
-const urlLocal = process.env.DATABASE_LOCAL;
+// const urlLocal = process.env.DATABASE_LOCAL;
 mongoose
   .connect(url, {
     useNewUrlParser: true,
@@ -41,10 +38,7 @@ const server = App.listen(port, () => {
 });
 
 ///Handling global UNHANDLE REJECTION
-process.on('unhandledRejection', (err) => {
-  console.error(err.name, err.message);
-  console.log('UNHANDLED REJECTION, Shutting down');
-
+process.on('unhandledRejection', () => {
   // Gracefully shut down, close MongoDB connection, then exit
   server.close(() => {
     mongoose.connection.close(() => {

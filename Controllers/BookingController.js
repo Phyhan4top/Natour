@@ -59,11 +59,7 @@ const createBookingCheckout = async (session) => {
   const tour = session.client_reference_id;
   const user = await userModel.findOne({ email: session.customer_email });
   const price = session.amount_total / 100;
-  const createdAt=new Date(session.created)
-  await bookingModel.create({ tour, user, price,createdAt });
-  console.log('Booking created successfully.');
-
-  console.log({ tour, user, price });
+  await bookingModel.create({ tour, user, price });
 };
 exports.webhookCheckout = (req, res, next) => {
   const signature = req.headers['stripe-signature'];

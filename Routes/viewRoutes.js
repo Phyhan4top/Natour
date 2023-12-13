@@ -10,7 +10,6 @@ const {
   signUpView,
 } = require('../Controllers/viewsRoutesHandle');
 const { isLoggedIn, protect } = require('../Model/Auth/AuthController');
-const { checkoutBooking } = require('../Controllers/BookingController');
 
 // Router.use(isLoggedIn);
 Router.route('/').get(isLoggedIn, Overview);
