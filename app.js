@@ -94,7 +94,7 @@ App.use(
 );
 //Implementing CORS
 App.use(cors());
-
+App.options('*', cors());
 App.use(compression());
 //TESTING MIDDLE WARE
 const middleWare = (req, res, next) => {
