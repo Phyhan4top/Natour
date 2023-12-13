@@ -28,6 +28,8 @@ mongoose
 //   console.log(err.name);
 //   console.log(err.message);
 // });
+// Assuming your app is named 'App'
+App.set('trust proxy', 1);
 
 console.log(App.get('env'));
 // console.log(process.env.NODE_ENV)

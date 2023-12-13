@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 // eslint-disable-next-line node/no-unpublished-require
-const {xss} = require('express-xss-sanitizer');
+const { xss } = require('express-xss-sanitizer');
 const hpp = require('hpp');
 
 const App = express();
@@ -47,8 +47,8 @@ if (process.env.NODE_ENV === 'development') {
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
-  message:
-    'Too many request with this IP Address, try again later in the next 1hour',
+  message: 'Too many requests from this IP, please try again later.',
+  keyGenerator: (req) => req.headers['x-forwarded-for'] || req.ip,
 });
 App.use('/api', limiter);
 //STRIPE WEBHOOK
