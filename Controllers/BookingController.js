@@ -79,6 +79,28 @@ exports.createBooking = catchAsync(async (req, res, next) => {
     },
   });
 });
+const createBookingCheckout = (session) => {
+console.log(session)
+}
+exports.webhookCheckout = (req, res, next) => {
+  const signature = req.headers['stripe-signature'];
+
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET,
+    );
+  } catch (err) {
+    return res.status(400).send(`Webhook error: ${err.message}`);
+  }
+
+  if (event.type === 'checkout.session.completed')
+    createBookingCheckout(event.data.object);
+
+  res.status(200).json({ received: true });
+};
 exports.updateBooking = catchAsync(async (req, res, next) => {
   const { bookingId } = req.params;
   const { tourId } = req.body;

@@ -19,6 +19,7 @@ const BookingRouter = require('./Routes/bookingRoutes');
 const AppError = require('./utils/AppError');
 const viewRouter = require('./Routes/viewRoutes');
 const errorController = require('./Controllers/ErrorController');
+const { webhookCheckout } = require('./Controllers/BookingController');
 
 //GLOBAL MIDDLE-WARE
 
@@ -50,7 +51,11 @@ const limiter = rateLimit({
     'Too many request with this IP Address, try again later in the next 1hour',
 });
 App.use('/api', limiter);
-
+App.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  webhookCheckout,
+);
 // Error handling middleware
 App.use((err, req, res, next) => {
   res.status(err.status || 500).json({
