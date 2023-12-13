@@ -51,6 +51,7 @@ const limiter = rateLimit({
     'Too many request with this IP Address, try again later in the next 1hour',
 });
 App.use('/api', limiter);
+//STRIPE WEBHOOK
 App.post(
   '/webhook-checkout',
   express.raw({ type: 'application/json' }),

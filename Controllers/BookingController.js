@@ -3,6 +3,7 @@ const stripe = require('stripe')(process.env.Stripe_Secret_Key);
 
 const bookingModel = require('../Model/bookingModel');
 const Tour = require('../Model/tourModel');
+const userModel = require('../Model/userModel');
 const AppError = require('../utils/AppError');
 const catchAsync = require('../utils/catchAsync');
 
@@ -35,23 +36,69 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     ],
     mode: 'payment',
     payment_method_types: ['card'],
-    success_url: `${req.protocol}://${req.get('host')}/?tour=${tourId}&user=${
-      req.user.id
-    }&price=${tour.price}`,
+    success_url: `${req.protocol}://${req.get('host')}/my-bookings`,
     cancel_url: `${req.protocol}://${req.get('host')}/tours/${tour.name}`,
+    client_reference_id: tour.id,
+    customer_email: req.user.email,
   });
 
   res.status(200).json({ status: 'success', session });
 });
 
-exports.checkoutBooking = catchAsync(async (req, res, next) => {
-  const { tour, user, price } = req.query;
-  if (!tour && !user && !price) {
-    return next();
-  }
-  await bookingModel.create({ tour, user, price });
+// exports.checkoutBooking = catchAsync(async (req, res, next) => {
+//   const { tour, user, price } = req.query;
+//   if (!tour && !user && !price) {
+//     return next();
+//   }
+//   await bookingModel.create({ tour, user, price });
 
-  res.redirect(req.originalUrl.split('?')[0]);
+//   res.redirect(req.originalUrl.split('?')[0]);
+// });
+
+const createBookingCheckout = async (session) => {
+  const tour = session.client_reference_id;
+  const user = await userModel.findOne({ email: session.customer_email });
+  const price = session.object.amount_total / 100;
+  await bookingModel.create({ tour, user, price });
+  console.log('Booking created successfully.');
+
+  console.log({ tour, user, price });
+};
+exports.webhookCheckout = (req, res, next) => {
+  const signature = req.headers['stripe-signature'];
+
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET,
+    );
+  } catch (err) {
+    return res.status(400).send(`Webhook error: ${err.message}`);
+  }
+
+  if (event.type === 'checkout.session.completed')
+    createBookingCheckout(event.data);
+
+  res.status(200).json({ received: true, data: event.data });
+};
+exports.updateBooking = catchAsync(async (req, res, next) => {
+  const { bookingId } = req.params;
+  const { tourId } = req.body;
+
+  const tour = await Tour.find({ _id: tourId });
+  if (!tour) return next(new AppError('there is no tour with this ID', 404));
+  const Booking = await bookingModel.findByIdAndUpdate(bookingId, {
+    tour: tour[0].id,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      Booking,
+    },
+  });
 });
 exports.createBooking = catchAsync(async (req, res, next) => {
   const { tour } = req.body;
@@ -73,45 +120,6 @@ exports.createBooking = catchAsync(async (req, res, next) => {
   const Booking = await bookingModel.create(body);
 
   res.status(201).json({
-    status: 'success',
-    data: {
-      Booking,
-    },
-  });
-});
-const createBookingCheckout = (session) => {
-console.log(session)
-}
-exports.webhookCheckout = (req, res, next) => {
-  const signature = req.headers['stripe-signature'];
-
-  let event;
-  try {
-    event = stripe.webhooks.constructEvent(
-      req.body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET,
-    );
-  } catch (err) {
-    return res.status(400).send(`Webhook error: ${err.message}`);
-  }
-
-  if (event.type === 'checkout.session.completed')
-    createBookingCheckout(event.data.object);
-
-  res.status(200).json({ received: true });
-};
-exports.updateBooking = catchAsync(async (req, res, next) => {
-  const { bookingId } = req.params;
-  const { tourId } = req.body;
-
-  const tour = await Tour.find({ _id: tourId });
-  if (!tour) return next(new AppError('there is no tour with this ID', 404));
-  const Booking = await bookingModel.findByIdAndUpdate(bookingId, {
-    tour: tour[0].id,
-  });
-
-  res.status(200).json({
     status: 'success',
     data: {
       Booking,

@@ -6,7 +6,6 @@ const {
   updateBooking,
   deleteBooking,
   getCurrentUserBookings,
-  webhookCheckout,
 } = require('../Controllers/BookingController');
 const { protect } = require('../Model/Auth/AuthController');
 
