@@ -8,6 +8,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 // eslint-disable-next-line node/no-unpublished-require
 const { xss } = require('express-xss-sanitizer');
 const hpp = require('hpp');
+const cors = require('cors');
 
 const App = express();
 const cookieParser = require('cookie-parser');
@@ -91,6 +92,8 @@ App.use(
     ],
   }),
 );
+//Implementing CORS
+App.use(cors());
 
 App.use(compression());
 //TESTING MIDDLE WARE
