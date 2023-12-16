@@ -92,8 +92,8 @@ exports.updateBooking = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    data: {
-      Booking,
+    body: {
+      data: Booking,
     },
   });
 });
@@ -118,8 +118,8 @@ exports.createBooking = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: 'success',
-    data: {
-      Booking,
+    body: {
+      data: Booking,
     },
   });
 });
@@ -128,8 +128,8 @@ exports.getAllBookings = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     results: Bookings.length,
-    data: {
-      Bookings,
+    body: {
+      data: Bookings,
     },
   });
 });
@@ -138,18 +138,15 @@ exports.getCurrentUserBookings = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     results: Bookings.length,
-    data: {
-      Bookings,
+    body: {
+      data: Bookings,
     },
   });
 });
 exports.deleteBooking = catchAsync(async (req, res, next) => {
   const { bookingId } = req.params;
-  const Bookings = await bookingModel.findByIdAndDelete(bookingId);
+ await bookingModel.findByIdAndDelete(bookingId);
   res.status(204).json({
     status: 'success',
-    data: {
-      Bookings,
-    },
   });
 });

@@ -24,6 +24,7 @@ const sendToken = (user, statusCode, res) => {
 
   user.password = undefined;
   user.active = undefined;
+  console.log('token generated', token);
   res
     .cookie('jwt', token, cookieOptions)
     .status(statusCode)
@@ -58,6 +59,7 @@ exports.Login = catchAsync(async (req, res, next) => {
 exports.isLoggedIn = async (req, res, next) => {
   try {
     if (req.cookies.jwt) {
+      console.log('fetch token', req.cookies.jwt);
       ///VERIFICATION OF THE TOKEN
       const verify = await promisify(jwt.verify)(
         req.cookies.jwt,

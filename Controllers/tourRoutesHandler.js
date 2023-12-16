@@ -83,7 +83,7 @@ exports.getTourWithin = async (req, res, next) => {
     status: 'success',
     result: tour.length,
     body: {
-      tour,
+      data:tour,
     },
   });
 };
@@ -119,7 +119,7 @@ exports.getLocation = async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     body: {
-      distance,
+    data:  distance,
     },
   });
 };
@@ -160,8 +160,8 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    data: {
-      stats: stats,
+   body: {
+      data: stats,
     },
   });
 });
@@ -194,8 +194,8 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     result: plan.length,
-    data: {
-      plan,
+   body: {
+     data: plan,
     },
   });
 });

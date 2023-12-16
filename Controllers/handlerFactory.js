@@ -15,7 +15,7 @@ exports.deleteReq = (Model) =>
     if (!model) {
       return next(new AppError('No Document found with this ID', 404));
     }
-    res.status(204).send({ status: 'success', data: { message: 'DELETED' } });
+    res.status(204).send({ status: 'success',body: { message: 'DELETED' } });
   });
 
 exports.updateReq = (Model) =>
@@ -50,7 +50,7 @@ exports.getOneReq = (Model, populateOptions) =>
     return res.status(200).json({
       status: 'success',
       requestAt: req.time,
-      data: {
+     body: {
         data: model,
       },
     });
@@ -62,6 +62,7 @@ exports.getAllReq = (Model) =>
     if (req.params.tourId) {
       filter = { tour: req.params.tourId };
     }
+
     const Features = new ApiFeatures(Model.find(filter), req.query)
       .filter()
       .sort()
