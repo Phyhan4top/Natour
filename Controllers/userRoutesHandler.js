@@ -50,7 +50,7 @@ exports.getAllUser = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     result: users.length,
-   body: { data:users },
+    body: { data: users },
   });
 });
 
@@ -71,7 +71,7 @@ exports.updateCurrentUser = catchAsync(async (req, res) => {
     runValidator: true,
   });
 
-  res.status(200).json({ status: 'success', body: {data: user } });
+  res.status(200).json({ status: 'success', body: { data: user } });
 });
 
 //CAN'T UPDATE THE USER PASSWORD AND ROLE
