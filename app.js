@@ -99,7 +99,6 @@ const corsOptions = {
 };
 App.use(cors(corsOptions));
 App.options('*', cors(corsOptions));
-App.use(cors(corsOptions));
 App.use(compression());
 //TESTING MIDDLE WARE
 const middleWare = (req, res, next) => {
