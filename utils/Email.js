@@ -15,10 +15,10 @@ module.exports = class Email {
     if (process.env.NODE_ENV === 'production') {
       //Production transporter
       return nodeMailer.createTransport({
-        host: 'smtp.mail.yahoo.com',
+        host: 'smtp.gmail.com',
         port: 465,
-        service: 'yahoo',
-        secure: false,
+        service: 'gmail',
+        secure: true,
         auth: {
           user: process.env.MAIL_PROD_USERNAME,
           pass: process.env.MAIL_PROD_PASSWORD,
