@@ -14,7 +14,18 @@ module.exports = class Email {
     // IN PRODUCTION CREATE TRANSPORTER
     if (process.env.NODE_ENV === 'production') {
       //Production transporter
-      return null;
+      return nodeMailer.createTransport({
+        host: 'smtp.mail.yahoo.com',
+        port: 465,
+        service: 'yahoo',
+        secure: false,
+        auth: {
+          user: process.env.MAIL_PROD_USERNAME,
+          pass: process.env.MAIL_PROD_PASSWORD,
+        },
+        debug: false,
+        logger: true,
+      });
     }
 
     //IN DEVELOPMENT CREATE TRANSPORTER

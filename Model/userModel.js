@@ -7,6 +7,12 @@ const Schema = {
   name: {
     type: String,
     required: [true, 'please tell us your name !!'],
+    validate: {
+      validator: function (value) {
+        return !validator.isEmpty(value);
+      },
+      message: 'Please tell us your name!',
+    },
     trim: true,
   },
   email: {

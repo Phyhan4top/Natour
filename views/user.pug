@@ -40,7 +40,7 @@ block content
       .user-view__content
         .user-view__form-container
           h2.heading-secondary.ma-bt-md Your account settings
-          form.form.form-user-data
+          form.form.form-user-data#form-datachange
             .form__group
               label.form__label(for='name') Name
               input#name.form__input(type='text', value=user.name, required)
@@ -51,13 +51,12 @@ block content
               img.form__user-photo(src=`img/users/${user.photo}`, alt='User photo')
               label(for='photo') Choose new photo
               input(type="file" accept="image/*" id='photo' name='photo')
-             
             .form__group.right
               button.btn.btn--small.btn--green#change-data Save settings
         .line &nbsp;
         .user-view__form-container
           h2.heading-secondary.ma-bt-md Password change
-          form.form.form-user-settings
+          form.form.form-user-settings#form-passwordchange
             .form__group
               label.form__label(for='password-current') Current password
               input#password-current.form__input(type='password', placeholder='••••••••', required, minlength='8')

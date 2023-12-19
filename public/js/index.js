@@ -8,8 +8,8 @@ const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const signUpForm = document.querySelector('.form.form--signup');
 const logoutBtn = document.querySelector('.nav__el.nav__el--logout');
-const changeCurrentPassword = document.querySelector('.form-user-settings');
-const changeData = document.querySelector('.form-user-data');
+const changeCurrentPassword = document.getElementById('form-passwordchange');
+const changeData = document.getElementById('form-datachange');
 const BookTour = document.getElementById('checkout-button');
 
 //DELEGATE
@@ -55,6 +55,7 @@ if (logoutBtn) {
 
 if (changeCurrentPassword) {
   changeCurrentPassword.addEventListener('submit', (e) => {
+    console.log('changePassword')
     e.preventDefault();
     const currentPassword = document.getElementById('password-current').value;
     const password = document.getElementById('password').value;
@@ -76,16 +77,16 @@ if (changeCurrentPassword) {
 }
 if (changeData) {
   changeData.addEventListener('submit', (e) => {
+    console.log('data-change')
     e.preventDefault();
-    console.log(document.getElementById('photo').files[0]);
+    // console.log(document.getElementById('photo').files[0]);
     const form = new FormData();
     form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value.toLowerCase());
     form.append('photo', document.getElementById('photo').files[0]);
-    console.log(form);
     document.getElementById('change-data').textContent = 'Updating';
 
-    updateSettings(form, 'data');
+    updateSettings(form,'data');
 
     document.getElementById('change-data').textContent == 'Save password';
 

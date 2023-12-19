@@ -88,12 +88,12 @@ export const changeInfo = async (name, email) => {
 export const updateSettings = async (data, type) => {
   try {
     
-   const   url =
-        type === 'data'
-          ? `/api/v1/users/updatepassword`
-          : `/api/v1/users/updateMe`;
+   const url =
+     type === 'password'
+       ? `/api/v1/users/updatepassword`
+       : `/api/v1/users/updateMe`;
     
-
+console.log(data)
     const res = await axios.patch(url, data);
     if (res.data.status === 'success') {
       showAlert('success', `${type.toUpperCase()} updated successfully`);

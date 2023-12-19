@@ -40,7 +40,7 @@ const showDevelopmentError = (err, req, res) => {
 const showProductionError = (err, req, res) => {
   if (req.originalUrl.startsWith('/api')) {
     if (err.isOperational) {
-   return   res.status(err.statusCode).json({
+      return res.status(err.statusCode).json({
         status: err.status,
         message: err.message,
       });
