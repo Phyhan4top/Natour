@@ -93,8 +93,13 @@ App.use(
   }),
 );
 //Implementing CORS
-App.use(cors());
-App.options('*', cors());
+const corsOptions = {
+  origin: 'http://localhost:3000', // Replace with your frontend URL
+  credentials: true, // Allow credentials (cookies, etc.)
+};
+App.use(cors(corsOptions));
+App.options('*', cors(corsOptions));
+App.use(cors(corsOptions));
 App.use(compression());
 //TESTING MIDDLE WARE
 const middleWare = (req, res, next) => {
