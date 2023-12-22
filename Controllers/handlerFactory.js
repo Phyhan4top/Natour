@@ -15,7 +15,7 @@ exports.deleteReq = (Model) =>
     if (!model) {
       return next(new AppError('No Document found with this ID', 404));
     }
-    res.status(204).send({ status: 'success',body: { message: 'DELETED' } });
+    res.status(204).send({ status: 'success', body: { message: 'DELETED' } });
   });
 
 exports.updateReq = (Model) =>

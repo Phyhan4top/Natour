@@ -14,7 +14,8 @@ const {
   resizeTourImages,
 } = require('../Controllers/tourRoutesHandler');
 const { protect, restrictTo } = require('../Model/Auth/AuthController');
-const reviewRouter = require('../Routes/reviewRoutes');
+
+const reviewRouter = require('./reviewRoutes');
 
 const Router = express.Router();
 Router.use('/:tourId/review', reviewRouter);
@@ -38,8 +39,8 @@ Router.route('/:id')
   .patch(
     protect,
     restrictTo('admin', 'lead-guide'),
-    uploadTourImages,
-    resizeTourImages,
+    // uploadTourImages,
+    // resizeTourImages,
     updateTour,
   )
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
