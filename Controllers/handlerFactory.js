@@ -22,6 +22,8 @@ exports.updateReq = (Model) =>
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const { body } = req;
+    console.log('id', id);
+    console.log('body', body);
     const model = await Model.findByIdAndUpdate(id, body, {
       new: true,
       runValidators: true,

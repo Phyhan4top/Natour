@@ -39,8 +39,8 @@ Router.route('/:id')
   .patch(
     protect,
     restrictTo('admin', 'lead-guide'),
-    // uploadTourImages,
-    // resizeTourImages,
+    uploadTourImages,
+    resizeTourImages,
     updateTour,
   )
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);

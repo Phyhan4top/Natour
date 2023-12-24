@@ -51,7 +51,11 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again later.',
   keyGenerator: (req) => req.headers['x-forwarded-for'] || req.ip,
 });
-App.use('/api', limiter);
+if (process.env.NODE_ENV === 'development') {
+  // Disable or adjust rate limiting for development
+} else {
+  App.use('/api', limiter);
+}
 //STRIPE WEBHOOK
 App.post(
   '/webhook-checkout',
