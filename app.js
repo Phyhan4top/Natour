@@ -32,13 +32,13 @@ App.use(express.static('./public'));
 //SET HTTP HEADERS SECURITY MIDDLE-WARE
 App.use(
   helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", 'trusted-cdn.com'],
-        styleSrc: ["'self'", 'styles.example.com'],
-      },
-    },
+    // contentSecurityPolicy: {
+    //   directives: {
+    //     defaultSrc: ["'self'"],
+    //     scriptSrc: ["'self'", 'trusted-cdn.com'],
+    //     styleSrc: ["'self'", 'styles.example.com'],
+    //   },
+    // },
     crossOriginEmbedderPolicy: { requireCorp: false },
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   }),
