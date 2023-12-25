@@ -39,6 +39,7 @@ App.use(
     //     styleSrc: ["'self'", 'styles.example.com'],
     //   },
     // },
+    contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: { requireCorp: false },
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   }),
