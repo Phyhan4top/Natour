@@ -27,13 +27,6 @@ Router.route('/distance/:latLng/unit/:unit').get(getLocation);
 Router.route('/')
   .get(getAllTour)
   .post(protect, restrictTo('admin'), createTour);
-Router.route('/top-5-cheap').get(aliasTop5Cheap, getAllTour);
-Router.route('/tours-stats').get(getTourStats);
-Router.route('/monthly-plan/:year').get(
-  protect,
-  restrictTo('admin', 'lead-guide', 'guide'),
-  getMonthlyPlan,
-);
 Router.route('/:id')
   .get(getTour)
   .patch(
@@ -44,5 +37,13 @@ Router.route('/:id')
     updateTour,
   )
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
+
+Router.route('/top-5-cheap').get(aliasTop5Cheap, getAllTour);
+Router.route('/tours-stats').get(getTourStats);
+Router.route('/monthly-plan/:year').get(
+  protect,
+  restrictTo('admin', 'lead-guide', 'guide'),
+  getMonthlyPlan,
+);
 
 module.exports = Router;

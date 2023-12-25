@@ -34,9 +34,10 @@ App.use(
   helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: false
   }),
 );
-
+App.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 //DEVELOPMENT LOGGING
 
 if (process.env.NODE_ENV === 'development') {
