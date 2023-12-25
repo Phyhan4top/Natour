@@ -106,7 +106,7 @@ App.use(
 );
 //Implementing CORS
 const corsOptions = {
-  origin: 'http://localhost:3000', // Replace with your frontend URL
+  origin: '*', // Replace with your frontend URL
   credentials: true, // Allow credentials (cookies, etc.)
 };
 App.use(cors(corsOptions));
