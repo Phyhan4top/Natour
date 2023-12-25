@@ -41,7 +41,7 @@ App.use(
     // },
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: { requireCorp: false },
-    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    // crossOriginResourcePolicy: { policy: 'cross-origin' },
   }),
 );
 
